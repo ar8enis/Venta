@@ -1,7 +1,7 @@
 <?php
     $host = "localhost";
-    $user = "refrigeracionypr_root";
-    $clave = "8992072662arg";
+    $user = "root";
+    $clave = "";
     $bd = "refrigeracionypr_card";
     $conexion = mysqli_connect($host,$user,$clave,$bd);
     if (mysqli_connect_errno()){
@@ -10,3 +10,8 @@
     }
     mysqli_select_db($conexion,$bd) or die("No se encuentra la base de datos");
     mysqli_set_charset($conexion,"utf8");
+    
+    // $user = "refrigeracionypr_root";
+    // $clave = "8992072662arg";
+
+?>

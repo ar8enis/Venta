@@ -28,3 +28,34 @@ right: 20px;
 }
 }
 
+.mt-20{
+    margin-top: 20px;
+}
+
+.mt-10{
+    margin-top: 10px;
+}
+
+.contact-form-item{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 30px;
+}
+
+.contact-form-item > label[aria-required]::after{
+    content: " *";
+    color: red;
+}
+
+.contact-form-item > label{
+    width: 80px;
+}
+
+.contact-form-item > input, .contact-form-item > textarea{
+    padding: 3px 8px;
+    width: calc(100% - 80px);
+    resize: none;
+}

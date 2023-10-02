@@ -18,6 +18,20 @@ if (isset($_POST)) {
         echo json_encode($array);
         die();
     }
+
+    if ($_POST['action'] === 'getFolio') {
+
+        $query = mysqli_query($conexion, "SELECT folio FROM folio");
+        $result = mysqli_fetch_assoc($query);
+
+        $folio = intval($result['folio']) + 1;
+        $updateQuery = mysqli_query($conexion, "UPDATE folio SET folio = $folio WHERE id = 1");
+
+        echo json_encode($result);
+        die();
+    }
+
+
 }
 
 ?>

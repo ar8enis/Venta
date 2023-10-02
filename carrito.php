@@ -17,6 +17,12 @@ require_once "config/config.php";
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="assets/css/styles.css" rel="stylesheet" />
     <link href="assets/css/estilos.css" rel="stylesheet" />
+    <!-- JSPDF -->
+    <script src="https://unpkg.com/jspdf@1.5.3/dist/jspdf.min.js"></script>
+    <!-- JSPDF AUTOTABLE -->
+    <script src="https://unpkg.com/jspdf-autotable@3.5.3/dist/jspdf.plugin.autotable.js"></script>
+    <!--  -->
+
 </head>
 
 <body>
@@ -45,14 +51,14 @@ require_once "config/config.php";
             <div class="row">
                 <div class="col-md-12">
                     <div class="table-responsive">
-                        <table class="table table-hover">
+                        <table id="tabla_productos" class="table table-hover">
                             <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>Producto</th>
-                                    <th>Precio</th>
-                                    <th>Cantidad</th>
-                                    <th>Sub Total</th>
+                                    <th style="text-align: right">Precio</th>
+                                    <th style="text-align: right">Cantidad</th>
+                                    <th style="text-align: right">Sub Total</th>
                                 </tr>
                             </thead>
                             <tbody id="tblCarrito">
@@ -61,12 +67,31 @@ require_once "config/config.php";
                         </table>
                     </div>
                 </div>
-                <div class="col-md-5 ms-auto">
-                    <h4>Total a Pagar: <span id="total_pagar">0.00</span></h4>
+                <div class="col-md-8 col-sm-12 mt-20">
+                    <h3 style="margin-bottom: 30px">Datos de contacto</h3>
+                    <div class="mt-20 contact-form-item">
+                        <label aria-required for="customer_name">Nombre:</label>
+                        <input id="customer_name" type="text">
+                    </div>
+                    <div class="mt-20 contact-form-item">
+                        <label aria-required for="customer_phone">Teléfono:</label>
+                        <input placeholder="Número de teléfono a 10 dígitos" id="customer_phone" type="tel" pattern="[0-9]{10}" max="10">
+                    </div>
+                    <div class="mt-20 contact-form-item">
+                        <label aria-required for="customer_mail">Correo:</label>
+                        <input id="customer_mail" type="email">
+                    </div>
+                    <div class="mt-20 contact-form-item">
+                        <label aria-required for="customer_message">Mensaje:</label>
+                        <textarea id="customer_message"></textarea>
+                    </div>
+
+                    <button onClick="quotationDownload();" class="btn btn-primary mt-5">Descargar cotización</button>
+                    <!-- <h4>Total a Pagar: <span id="total_pagar">0.00</span></h4>
                     <div class="d-grid gap-2">
                         <div id="paypal-button-container"></div>
                         <button class="btn btn-warning" type="button" id="btnVaciar">Vaciar Carrito</button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -81,73 +106,9 @@ require_once "config/config.php";
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     <script src="assets/js/jquery-3.6.0.min.js"></script>
-    <script src="https://www.paypal.com/sdk/js?client-id=<?php echo CLIENT_ID; ?>&locale=<?php echo LOCALE; ?>&currency=MXN"></script>
+    <!-- <script src="https://www.paypal.com/sdk/js?client-id=<?php echo CLIENT_ID; ?>&locale=<?php echo LOCALE; ?>&currency=MXN"></script> -->
     <script src="assets/js/scripts.js"></script>
-    <script>
-        mostrarCarrito();
-
-        function mostrarCarrito() {
-            if (localStorage.getItem("productos") != null) {
-                let array = JSON.parse(localStorage.getItem('productos'));
-                if (array.length > 0) {
-                    $.ajax({
-                        url: 'ajax.php',
-                        type: 'POST',
-                        async: true,
-                        data: {
-                            action: 'buscar',
-                            data: array
-                        },
-                        success: function(response) {
-                            console.log(response);
-                            const res = JSON.parse(response);
-                            let html = '';
-                            res.datos.forEach(element => {
-                                html += `
-                            <tr>
-                                <td>${element.id}</td>
-                                <td>${element.nombre}</td>
-                                <td>${element.precio}</td>
-                                <td>1</td>
-                                <td>${element.precio}</td>
-                            </tr>
-                            `;
-                            });
-                            $('#tblCarrito').html(html);
-                            $('#total_pagar').text(res.total);
-                            paypal.Buttons({
-                                style: {
-                                    color: 'blue',
-                                    shape: 'pill',
-                                    label: 'pay'
-                                },
-                                createOrder: function(data, actions) {
-                                    // This function sets up the details of the transaction, including the amount and line item details.
-                                    return actions.order.create({
-                                        purchase_units: [{
-                                            amount: {
-                                                value: res.total
-                                            }
-                                        }]
-                                    });
-                                },
-                                onApprove: function(data, actions) {
-                                    // This function captures the funds from the transaction.
-                                    return actions.order.capture().then(function(details) {
-                                        // This function shows a transaction success message to your buyer.
-                                        alert('Transaction completed by ' + details.payer.name.given_name);
-                                    });
-                                }
-                            }).render('#paypal-button-container');
-                        },
-                        error: function(error) {
-                            console.log(error);
-                        }
-                    });
-                }
-            }
-        }
-    </script>
+    <script src="assets/js/cotización.js"></script>
 </body>
 
 </html>

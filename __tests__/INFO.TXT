@@ -1,0 +1,23 @@
+ventasrefrigeracion@refrigeracionyproyectossanantonio.com
+
+Username: ventasrefrigeracion@refrigeracionyproyectossanantonio.com
+Password: Use the email account’s password.
+Incoming Server: mail.refrigeracionyproyectossanantonio.com
+IMAP Port: 993 POP3 Port: 995
+Outgoing Server: mail.refrigeracionyproyectossanantonio.com
+
+SMTP Port: 465
+IMAP, POP3, and SMTP require authentication.
+
+RFC hehm870101389
+
+55 6792 3283
+
+Calle Menorca #31 Fracc. Galaxias de Almecatla, Cuautlancingo, Puebla. CP: 72713
+
+Quedo atento a cualquier comentario o duda que tenga acerca de mis productos o servicios
+
+Luis Antonio Tlaque Lopez
+2461854173
+antonio.tlaque@hotmail.com
+HOLA DESDE EL SITIO WEB

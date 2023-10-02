@@ -20,6 +20,7 @@ const quotationDownload = async e => {
     const customer_phone = document.getElementById('customer_phone').value;
     const customer_mail = document.getElementById('customer_mail').value;
     const customer_message = document.getElementById('customer_message').value;
+    const customer_postal_code = document.getElementById('customer_postal_code').value;
     const { folio } = JSON.parse(res);
 
     if (customer_name.trim() === "") {
@@ -36,8 +37,14 @@ const quotationDownload = async e => {
         alert('Por favor llena el campo "Correo"');
         return;
     }
+
     if (customer_message.trim() === "") {
         alert('Por favor llena el campo "Mensaje"');
+        return;
+    }
+
+    if (customer_postal_code.trim() === "") {
+        alert('Por favor llena el campo "Código Postal"');
         return;
     }
 
@@ -81,7 +88,7 @@ const quotationDownload = async e => {
             cellPadding: 2,
         },
         didDrawPage: function () {
-            quotationLayout(doc, customer_name, customer_phone, customer_mail, folio);
+            quotationLayout(doc, customer_name, customer_phone, customer_mail, customer_postal_code, folio);
         }
     });
 
@@ -94,14 +101,14 @@ const quotationDownload = async e => {
         return;
     }
 
-    sendMail(customer_name, customer_phone, customer_mail, customer_message, folio);
+    sendMail(customer_name, customer_phone, customer_mail, customer_message, customer_postal_code, folio);
 
     window.open(doc.output('bloburl'), '_blank', "toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,modal=yes,top=200,left=500,width=1200,height=900");
 
 }
 
 //! LAYOUT DEL PDF
-const quotationLayout = (doc, name, phone, email, folio) => {
+const quotationLayout = (doc, name, phone, email, postal, folio) => {
 
     const img = new Image();
     const quotationFolio = `COT000${folio}`;
@@ -152,9 +159,10 @@ const quotationLayout = (doc, name, phone, email, folio) => {
     doc.text(200, 60, 'Cliente', 'right');
     
     doc.setFontStyle('normal');
-    doc.text(200, 65, name.trim(), 'right');
-    doc.text(200, 70, phone.trim(), 'right');
-    doc.text(200, 75, email.trim(), 'right');
+    doc.text(200, 65, `Nombre: ${name.trim()}`, 'right');
+    doc.text(200, 70, `Tel. ${phone.trim()}`, 'right');
+    doc.text(200, 75, `Correo: ${email.trim()}`, 'right');
+    doc.text(200, 80, `C.P. ${postal.trim()}`, 'right');
 
     doc.text(10, 290, 'Quedo atento a cualquier comentario o duda que tenga acerca de mis productos o servicios', 'left');
 
@@ -288,7 +296,7 @@ const getFolioSequence = async () => {
 }
 
 // ? ENVIAMOS EL CORREO CON LOS DATOS DEL CLIENTE Y EL PDF DE LA COTIZACIÓN COMO ARCHIVO ADJUNTO
-const sendMail = async (name, phone, mail, message, folio) => {
+const sendMail = async (name, phone, mail, message, postal, folio) => {
 
     $.ajax({
         url: 'assets/php/send_mail.php',

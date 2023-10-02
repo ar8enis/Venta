@@ -24,55 +24,91 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
 </head>
 <style type="text/css">
-.btn-wsp{
-    position: fixed;
-    width: 55px;
-    height: 55px;
-    line-height: 55px;
-    bottom: 110px;
-    right: 30px;
-    background: #0df053;
-    color: #fff;
-    border-radius: 50px;
-    text-align: center;
-    font-size: 30px;
-    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.3);
-    z-index: 100;
 
-  }
+    .btn-wsp{
+        position: fixed;
+        width: 55px;
+        height: 55px;
+        line-height: 55px;
+        bottom: 110px;
+        right: 30px;
+        background: #0df053;
+        color: #fff;
+        border-radius: 50px;
+        text-align: center;
+        font-size: 30px;
+        box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.3);
+        z-index: 100;
+    }
 
-  .btn-mail{
-    position: fixed;
-    width: 55px;
-    height: 55px;
-    line-height: 55px;
-    bottom: 170px;
-    right: 30px;
-    background: #D6320E;
-    color: #fff;
-    border-radius: 50px;
-    text-align: center;
-    font-size: 30px;
-    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.3);
-    z-index: 100;
+    .btn-mail{
+        position: fixed;
+        width: 55px;
+        height: 55px;
+        line-height: 55px;
+        bottom: 170px;
+        right: 30px;
+        background: #D6320E;
+        color: #fff;
+        border-radius: 50px;
+        text-align: center;
+        font-size: 30px;
+        box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.3);
+        z-index: 100;
+    }
 
-  }
+    .btn-mail:hover{
+        opacity: 0.7;
+        color: white !important;
+    }
 
-  
-.btn-wsp:hover{
-  text-decoration: none;
-  color: #0df053;
-    background: #fff;
-}
+    .btn-dnw{
+        position: fixed;
+        width: 55px;
+        height: 55px;
+        line-height: 55px;
+        bottom: 230px;
+        right: 30px;
+        background: #0066ff;
+        color: #fff;
+        border-radius: 50px;
+        text-align: center;
+        font-size: 30px;
+        box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.3);
+        z-index: 100;
+    }
+
+    .btn-dnw:hover{
+        opacity: 0.7;
+        color: white !important;
+    }
+
+    .btn-wsp:hover{
+        text-decoration: none;
+        color: #0df053;
+        background: #fff;
+    }
+
 </style>
 <body>
-    <a href="#" class="btn-flotante" id="btnCarrito">Carrito <span class="badge bg-success" id="carrito">0</span></a>
-    <a href="mailto:ventasrefrigeracion@refrigeracionyproyectossanantonio.com?subject=Cotizacion" class="btn-mail">
-    <i class="fa fa-envelope"></i>
+    <!-- //* BOTÓN CARRITO -->
+    <a href="#" class="btn-flotante" id="btnCarrito">
+        Carrito
+        <span class="badge bg-success" id="carrito">0</span>
     </a>
-    <a href="http://api.whatsapp.com/send?phone=+522224267863" class="btn-wsp" target="_blank">
+    <!-- //* BOTÓN EMAIL -->
+    <a href="mailto:ventasrefrigeracion@refrigeracionyproyectossanantonio.com?subject=Cotizacion" class="btn-mail" title="Contactanos">
+        <i class="fa fa-envelope"></i>
+    </a>
+    <!-- //* BOTÓN WHATSAPP -->
+    <a href="http://api.whatsapp.com/send?phone=+522224267863" class="btn-wsp" target="_blank" title="Contactanos">
         <i class="fa fa-whatsapp";></i>
     </a>
+    <!-- //* BOTÓN CATÁLOGOS -->
+    <a href="#" id="download_catalogs" class="btn-dnw" title="Descargar catálogos">
+        <i class="fa fa-download" aria-hidden="true"></i>
+    </a>
+
     <!-- Navigation-->
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
@@ -86,10 +122,11 @@
                     <ul class="navbar-nav">
                         <a href="#" class="nav-link text-info" category="all">Todo</a>
                         <?php
-                        $query = mysqli_query($conexion, "SELECT * FROM categorias");
-                        while ($data = mysqli_fetch_assoc($query)) { ?>
-                            <a href="#" class="nav-link" category="<?php echo $data['categoria']; ?>"><?php echo $data['categoria']; ?></a>
-                        <?php } ?>
+                            $query = mysqli_query($conexion, "SELECT * FROM categorias");
+                            while ($data = mysqli_fetch_assoc($query)) { ?>
+                                <a href="#" class="nav-link" category="<?php echo $data['categoria']; ?>"><?php echo $data['categoria']; ?></a>
+                            <?php }
+                        ?>
                     </ul>
                 </div>
             </div>
@@ -139,7 +176,7 @@
                                 </div>
                                 <!-- Product actions-->
                                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                    <div class="text-center"><a class="btn btn-outline-dark mt-auto agregar" data-id="<?php echo $data['id']; ?>" href="#">Agregar</a></div>
+                                    <div class="text-center"><a class="btn btn-outline-dark mt-auto agregar" data-id="<?php echo $data['id']; ?>" href="#">Agregar al carrito</a></div>
                                 </div>
                             </div>
                         </div>

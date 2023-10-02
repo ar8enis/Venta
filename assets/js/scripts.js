@@ -1,8 +1,17 @@
 $(document).ready(function () {
+
     let productos = [];
     let items = {
         id: 0
     }
+    
+    const filesForDownload = [
+        { path: "assets/catalogs/lavadora.pdf", name: "Catálogo de Lavadoras - 2023.pdf" },
+        { path: "assets/catalogs/licuadoras.pdf", name: "Catálogo de Licuadoras - 2023.pdf" },
+        { path: "assets/catalogs/refrigerador.pdf", name: "Catálogo de Refrigeradores - 2023.pdf" },
+        { path: "assets/catalogs/ventiladores.pdf", name: "Catálogo de Ventiladores - 2023.pdf" },
+    ];
+
     mostrar();
     $('.navbar-nav .nav-link[category="all"]').addClass('active');
 
@@ -65,6 +74,26 @@ $(document).ready(function () {
         if (confirm('Esta seguro de eliminar?')) {
             this.submit();
         }
+    });
+    $('#download_catalogs').click(function (e) {
+        e.preventDefault();
+
+        const temporaryLink = document.createElement("a");
+        temporaryLink.style.display = 'none';
+
+        document.body.appendChild(temporaryLink);
+
+        for(let i = 0; i < filesForDownload.length; i++ ){
+
+            const download = filesForDownload[i];
+
+            temporaryLink.setAttribute( 'href', download.path );
+            temporaryLink.setAttribute( 'download', download.name );
+
+            temporaryLink.click();
+
+        }
+
     })
 });
 

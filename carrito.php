@@ -30,7 +30,7 @@ require_once "config/config.php";
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="./">Vida Informático</a>
+                <a class="navbar-brand" href="./">< Volver</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -78,6 +78,10 @@ require_once "config/config.php";
                         <input placeholder="Número de teléfono a 10 dígitos" id="customer_phone" type="tel" pattern="[0-9]{10}" max="10">
                     </div>
                     <div class="mt-20 contact-form-item">
+                        <label aria-required for="customer_postal_code">Código Postal:</label>
+                        <input id="customer_postal_code" type="tel" pattern="[0-9]{5}" max="5">
+                    </div>
+                    <div class="mt-20 contact-form-item">
                         <label aria-required for="customer_mail">Correo:</label>
                         <input id="customer_mail" type="email">
                     </div>
@@ -99,7 +103,7 @@ require_once "config/config.php";
     <!-- Footer-->
     <footer class="py-5 bg-dark">
         <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Your Website 2021</p>
+            <p class="m-0 text-center text-white">Copyright &copy; refrigeracionyproyectossanantonio 2021</p>
         </div>
     </footer>
     <!-- Bootstrap core JS-->

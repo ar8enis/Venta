@@ -3,11 +3,17 @@
 <html lang="en">
 
 <head>
+    <title>Refrigeración y Proyectos San Antonio.</title>
+
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>refrigeracionyproyectossanantonio</title>
+    <meta name="title" content="Refrigeración y Proyectos San Antonio." />
+    <meta name="description" content="Los expertos en refrigeración." />
+    <meta property="og:image" content="assets/img/logo.jpg" />
+    <meta property="og:image:type" content="image/jpg" />
+    <meta property="og:image:width" content="436" />
+    <meta property="og:image:height" content="228" />
+    <meta name="theme-color" content=" #000000" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Bootstrap icons-->

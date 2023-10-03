@@ -55,10 +55,10 @@ require_once "config/config.php";
                         <table id="tabla_productos" class="table table-hover table-bordered" style="width: 100%">
                             <thead>
                                 <tr>
-                                    <th style="text-align: left">Producto</th>
-                                    <th style="text-align: left">Precio</th>
-                                    <th style="text-align: left">Cantidad</th>
-                                    <th style="text-align: left">Sub Total</th>
+                                    <th style="text-align: left; padding: 5px">Producto</th>
+                                    <th style="text-align: left; padding: 5px">Precio</th>
+                                    <th style="text-align: left; padding: 5px">Cantidad</th>
+                                    <th style="text-align: left; padding: 5px">Sub Total</th>
                                 </tr>
                             </thead>
                             <tbody id="tblCarrito"></tbody>

@@ -228,10 +228,10 @@ const createQuotationTable = () => {
 
                         html += `
                                 <tr>
-                                    <td>${productName}</td>
-                                    <td style="text-align: right">${MXNCurrency.format(productPrice)}</td>
-                                    <td style="text-align: right">${productQuantity}</td>
-                                    <td style="text-align: right">${MXNCurrency.format(productSubTotal)}</td>
+                                    <td style="padding: 5px;">${productName}</td>
+                                    <td style="padding: 5px;text-align: right">${MXNCurrency.format(productPrice)}</td>
+                                    <td style="padding: 5px;text-align: right">${productQuantity}</td>
+                                    <td style="padding: 5px;text-align: right">${MXNCurrency.format(productSubTotal)}</td>
                                 </tr>`;
 
                         totalArray.push(productSubTotal);

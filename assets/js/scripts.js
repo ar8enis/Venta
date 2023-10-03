@@ -63,10 +63,27 @@ $(document).ready(function () {
     })
     //categoria
     $('#abrirCategoria').click(function(){
+        $('#categoria_id').val('');
+        $('#nombre').val('');
+        $('#categoria_accion').val('create');
         $('#categorias').modal('show');
     })
     //productos
     $('#abrirProducto').click(function () {
+
+        document.querySelector('#foto').setAttribute('required', true);
+
+        $('#producto_id').val('');
+        $('#producto_action').val('create');
+
+        $('#nombre').val('');
+        $('#cantidad').val('');
+        $('#descripcion').val('');
+        $('#p_normal').val('');
+        $('#p_rebajado').val('');
+        $('#categoria').val('');
+        $('#foto').val('');
+
         $('#productos').modal('show');
     })
     $('.eliminar').click(function(e){
@@ -104,4 +121,106 @@ function mostrar(){
             $('#carrito').text(array.length);
         }
     }
+}
+
+$('#form_productos').submit(function (e) {
+
+    e.preventDefault();
+    
+    const id = document.querySelector('#producto_id');
+    const action = document.querySelector('#producto_action');
+    const product = document.querySelector('#nombre');
+    const quantity = document.querySelector('#cantidad');
+    const description = document.querySelector('#descripcion');
+    const price = document.querySelector('#p_normal');
+    const priceOff = document.querySelector('#p_rebajado');
+    const category = document.querySelector('#categoria');
+    const image = document.querySelector('#foto').files[0];
+
+    const form = new FormData();
+    form.append('id', id.value);
+    form.append('action', action.value);
+    form.append('product', product.value);
+    form.append('quantity', quantity.value);
+    form.append('description', description.value);
+    form.append('price', price.value);
+    form.append('priceOff', priceOff.value);
+    form.append('category', category.value);
+    form.append('image', image);
+
+    $.ajax({
+        url: '../assets/php/create_or_update_product.php',
+        type: 'POST',
+        async: true,
+        processData: false,
+        contentType: false,
+        data: form,
+        complete: function () {
+            window.location.reload();
+        },
+        error: function (error) {
+            console.error(error);
+            alert('Ocurrió un error');
+        }
+    });
+
+});
+
+function editProductOnClick(row) {
+
+    const { id, product, descripcion, price, priceoff, quantity, category } = row.dataset;
+
+    document.querySelector('#foto').removeAttribute('required');
+
+    $('#producto_id').val(id);
+    $('#producto_action').val('update');
+
+    $('#nombre').val(product);
+    $('#cantidad').val(quantity);
+    $('#descripcion').val(descripcion);
+    $('#p_normal').val(price);
+    $('#p_rebajado').val(priceoff);
+    $('#categoria').val(category);
+
+    $('#productos').modal('show');
+}
+
+$('#form_categorias').submit(function (e) {
+
+    e.preventDefault();
+
+    const id = document.querySelector('#categoria_id');
+    const category = document.querySelector('#nombre');
+    const action = document.querySelector('#categoria_accion');
+
+    $.ajax({
+        url: '../assets/php/create_or_update_category.php',
+        type: 'POST',
+        async: true,
+        data: {
+            id: id.value,
+            category: category.value,
+            action: action.value,
+        },
+        complete: function () {
+            window.location.reload();
+        },
+        error: function (error) {
+            console.error(error);
+            alert('Ocurrió un error');
+        }
+    });
+
+});
+
+function editCategoryOnClick(row) {
+
+    const { id, description } = row.dataset;
+
+    $('#categoria_id').val(id);
+    $('#categoria_accion').val('update');
+    $('#nombre').val(description);
+
+    $('#categorias').modal('show');
+
 }

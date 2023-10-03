@@ -1,15 +1,6 @@
 <?php
-require_once "../config/conexion.php";
-if (isset($_POST)) {
-    if (!empty($_POST)) {
-        $nombre = $_POST['nombre'];
-        $query = mysqli_query($conexion, "INSERT INTO categorias(categoria) VALUES ('$nombre')");
-        if ($query) {
-            header('Location: categorias.php');
-        }
-    }
-}
-include("includes/header.php");
+    require_once "../config/conexion.php";
+    include("includes/header.php");
 ?>
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Categorias</h1>
@@ -23,7 +14,7 @@ include("includes/header.php");
                     <tr>
                         <th>Id</th>
                         <th>Nombre</th>
-                        <th></th>
+                        <th style="width: 80px;"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,9 +25,12 @@ include("includes/header.php");
                             <td><?php echo $data['id']; ?></td>
                             <td><?php echo $data['categoria']; ?></td>
                             <td>
-                                <form method="post" action="eliminar.php?accion=cli&id=<?php echo $data['id']; ?>" class="d-inline eliminar">
-                                    <button class="btn btn-danger" type="submit">Eliminar</button>
-                                </form>
+                                <div style="display: flex; flex-direction: column; gap: 10px;">
+                                    <button class="btn btn-sm btn-primary" data-id="<?php echo $data['id']; ?>" data-description="<?php echo $data['categoria']; ?>" onClick="editCategoryOnClick(this);" type="submit">Editar</button>
+                                    <form method="post" action="eliminar.php?accion=cli&id=<?php echo $data['id']; ?>" class="d-inline eliminar">
+                                        <button class="btn btn-sm btn-danger" type="submit">Eliminar</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     <?php } ?>
@@ -55,10 +49,12 @@ include("includes/header.php");
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="POST" autocomplete="off">
+                <form id="form_categorias" action="" method="POST" autocomplete="off">
                     <div class="form-group">
                         <label for="nombre">Nombre</label>
                         <input id="nombre" class="form-control" type="text" name="nombre" placeholder="Categoria" required>
+                        <input id="categoria_id" type="hidden">
+                        <input id="categoria_accion" value="create" type="hidden">
                     </div>
                     <button class="btn btn-primary" type="submit">Registrar</button>
                 </form>

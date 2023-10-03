@@ -1,29 +1,7 @@
 <?php
-require_once "../config/conexion.php";
-
-if (isset($_POST)) {
-    if (!empty($_POST)) {
-        $nombre = $_POST['nombre'];
-        $cantidad = $_POST['cantidad'];
-        $descripcion = $_POST['descripcion'];
-        $p_normal = $_POST['p_normal'];
-        $p_rebajado = $_POST['p_rebajado'];
-        $categoria = $_POST['categoria'];
-        $img = $_FILES['foto'];
-        $name = $img['name'];
-        $tmpname = $img['tmp_name'];
-        $fecha = date("YmdHis");
-        $foto = $fecha . ".jpg";
-        $destino = "../assets/img/" . $foto;
-        $query = mysqli_query($conexion, "INSERT INTO productos(nombre, descripcion, precio_normal, precio_rebajado, cantidad, imagen, id_categoria) VALUES ('$nombre', '$descripcion', '$p_normal', '$p_rebajado', $cantidad, '$foto', $categoria)");
-        if ($query) {
-            if (move_uploaded_file($tmpname, $destino)) {
-                header('Location: productos.php');
-            }
-        }
-    }
-}
-include("includes/header.php"); ?>
+    require_once "../config/conexion.php";
+    include("includes/header.php");
+?>
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Productos</h1>
     <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" id="abrirProducto"><i class="fas fa-plus fa-sm text-white-50"></i> Nuevo</a>
@@ -41,7 +19,7 @@ include("includes/header.php"); ?>
                         <th>Precio Rebajado</th>
                         <th>Cantidad</th>
                         <th>Categoria</th>
-                        <th></th>
+                        <th style="width: 80px;"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -59,12 +37,24 @@ include("includes/header.php"); ?>
                             <td><?php echo $data['cantidad']; ?></td>
                             <td><?php echo $data['categoria']; ?></td>
                             <td>
-                                <form method="post" action="eliminar.php?accion=pro&id=<?php echo $data['id']; ?>" class="d-inline eliminar">
-                                    <button class="btn btn-danger" type="submit">Eliminar</button>
-                                </form>
-                                <form method="post" action="editar.php?accion=pro&id=<?php echo $data['id']; ?>" class="d-inline eliminar">
-                                    <button class="btn btn-danger" type="submit">Eliminar</button>
-                                </form>
+                                <div style="display: flex; flex-direction: column; gap: 10px;">
+                                    <button
+                                        data-id="<?php echo $data['id']; ?>"
+                                        data-product="<?php echo $data['nombre']; ?>"
+                                        data-descripcion="<?php echo $data['descripcion']; ?>"
+                                        data-price="<?php echo $data['precio_normal']; ?>"
+                                        data-priceoff="<?php echo $data['precio_rebajado']; ?>"
+                                        data-quantity="<?php echo $data['cantidad']; ?>"
+                                        data-category="<?php echo $data['id_categoria']; ?>"
+                                        data-image="<?php echo $data['imagen']; ?>"
+                                        onClick="editProductOnClick(this);"
+                                        class="btn btn-sm btn-primary"
+                                        type="submit"
+                                    >Editar</button>
+                                    <form method="post" action="eliminar.php?accion=pro&id=<?php echo $data['id']; ?>" class="d-inline eliminar">
+                                        <button class="btn btn-sm btn-danger" type="submit">Eliminar</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     <?php
@@ -85,7 +75,11 @@ include("includes/header.php"); ?>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="POST" enctype="multipart/form-data" autocomplete="off">
+                <form id="form_productos" action="" method="POST" enctype="multipart/form-data" autocomplete="off">
+
+                    <input id="producto_id" type="hidden">
+                    <input id="producto_action" type="hidden">
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -132,7 +126,7 @@ include("includes/header.php"); ?>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="imagen">Foto</label>
-                                <input type="file" class="form-control" name="foto" required>
+                                <input id="foto" accept="image/jpeg, image/jpeg" type="file" class="form-control" name="foto" required>
                             </div>
                         </div>
                     </div>

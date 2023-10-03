@@ -109,6 +109,7 @@ const quotationDownload = async e => {
     }
 
     sendMail(customer_name, customer_phone, customer_mail, customer_message, customer_postal_code, folio, table);
+    localStorage.removeItem('productos');
 
     window.open(doc.output('bloburl'), '_blank', "toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,modal=yes,top=200,left=500,width=1200,height=900");
 

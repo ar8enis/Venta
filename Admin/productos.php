@@ -46,7 +46,9 @@ include("includes/header.php"); ?>
                 </thead>
                 <tbody>
                     <?php
+
                     $query = mysqli_query($conexion, "SELECT p.*, c.id AS id_cat, c.categoria FROM productos p INNER JOIN categorias c ON c.id = p.id_categoria ORDER BY p.id DESC");
+
                     while ($data = mysqli_fetch_assoc($query)) { ?>
                         <tr>
                             <td><img class="img-thumbnail" src="../assets/img/<?php echo $data['imagen']; ?>" width="50"></td>
@@ -60,9 +62,14 @@ include("includes/header.php"); ?>
                                 <form method="post" action="eliminar.php?accion=pro&id=<?php echo $data['id']; ?>" class="d-inline eliminar">
                                     <button class="btn btn-danger" type="submit">Eliminar</button>
                                 </form>
+                                <form method="post" action="editar.php?accion=pro&id=<?php echo $data['id']; ?>" class="d-inline eliminar">
+                                    <button class="btn btn-danger" type="submit">Eliminar</button>
+                                </form>
                             </td>
                         </tr>
-                    <?php } ?>
+                    <?php
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>

@@ -4,6 +4,9 @@ const MXNCurrency = new Intl.NumberFormat('es-MX', {
     currency: 'MXN'
 });
 
+var pageCounter = 1;
+var tableLength = 0;
+
 //? SE EJECUTA AL CARGAR EL DOM
 window.addEventListener('DOMContentLoaded', async () => {
     createQuotationTable();
@@ -61,11 +64,10 @@ const quotationDownload = async e => {
             lineColor: [0, 0, 0],
         },
         columnStyles: {
-            0: { cellWidth: 10 },
-            1: { cellWidth: 120 },
-            2: { cellWidth: 20, halign: 'left' },
-            3: { cellWidth: 20, halign: 'left' },
-            4: { cellWidth: 20, halign: 'left' },
+            0: { cellWidth: 100, halign: 'left' },
+            1: { cellWidth: 30, halign: 'left' },
+            2: { cellWidth: 30, halign: 'left' },
+            3: { cellWidth: 30, halign: 'left' },
         },
         headStyles: {
             font: 'helvetica',
@@ -89,7 +91,12 @@ const quotationDownload = async e => {
         },
         didDrawPage: function () {
             quotationLayout(doc, customer_name, customer_phone, customer_mail, customer_postal_code, folio);
-        }
+        },
+        willDrawCell: function (data) {
+            if ((data.column.index === 0 || data.column.index === 3) && data.row.section === 'body' && data.row.index === tableLength) {
+                doc.setFontStyle('bold');
+            }
+        },
     });
 
     const blob = doc.output('blob');
@@ -101,7 +108,7 @@ const quotationDownload = async e => {
         return;
     }
 
-    sendMail(customer_name, customer_phone, customer_mail, customer_message, customer_postal_code, folio);
+    sendMail(customer_name, customer_phone, customer_mail, customer_message, customer_postal_code, folio, table);
 
     window.open(doc.output('bloburl'), '_blank', "toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no,modal=yes,top=200,left=500,width=1200,height=900");
 
@@ -112,24 +119,25 @@ const quotationLayout = (doc, name, phone, email, postal, folio) => {
 
     const img = new Image();
     const quotationFolio = `COT000${folio}`;
+    const currentDate = dayjs(Date.now());
+    const limitDate = currentDate.add(5, 'day');
 
     //? DATOS DE LA EMPRESA
     img.src = '../assets/img/logo.jpg';
-    doc.addImage(img, 'JPG', 10, 3, 51, 56);
+    doc.addImage(img, 'JPG', 9, 3, 51, 58);
 
     doc.setFontSize(14);
     doc.setFontStyle('bold');
     doc.text(200, 10, 'Refrigeracion y Proyectos San Antonio.', 'right');
-
+    
     doc.setFontSize(12);
     doc.setFontStyle('normal');
     doc.text(200, 15, 'Los expertos en refrigeración.', 'right');
-
+    
     doc.setFontSize(10);
-    doc.setFontStyle('normal');
-    doc.text(10, 65, 'Calle Menorca #31 Fracc. Galaxias de Almecatla', 'left');
-    doc.text(10, 70, 'Cuautlancingo, Puebla.', 'left');
-    doc.text(10, 75, 'CP: 72713', 'left');
+    // doc.text(10, 65, 'Calle Menorca #31 Fracc. Galaxias de Almecatla', 'left');
+    doc.text(10, 65, 'Cuautlancingo, Puebla.', 'left');
+    doc.text(10, 70, 'Código Postal: 72713', 'left');
 
     doc.setFontStyle('bold');
     doc.text(10, 85, 'Teléfono:', 'left');
@@ -150,22 +158,27 @@ const quotationLayout = (doc, name, phone, email, postal, folio) => {
     doc.text(28, 95, 'ventasrefrigeracion@refrigeracionyproyectossanantonio.com', 'left');
 
     //? DATOS DEL CLIENTE
-    
     doc.setFontSize(12);
     doc.setFontStyle('bold');
     doc.text(200, 50, quotationFolio, 'right');
 
     doc.setFontSize(10);
     doc.text(200, 60, 'Cliente', 'right');
-    
     doc.setFontStyle('normal');
     doc.text(200, 65, `Nombre: ${name.trim()}`, 'right');
     doc.text(200, 70, `Tel. ${phone.trim()}`, 'right');
     doc.text(200, 75, `Correo: ${email.trim()}`, 'right');
     doc.text(200, 80, `C.P. ${postal.trim()}`, 'right');
 
-    doc.text(10, 290, 'Quedo atento a cualquier comentario o duda que tenga acerca de mis productos o servicios', 'left');
+    doc.setFontSize(8);
+    doc.text(200, 91, `Fecha de expedición: ${currentDate.format('DD/MM/YYYY')}`, 'right');
+    doc.text(200, 95, `Fecha de vigencia: ${limitDate.format('DD/MM/YYYY')}`, 'right');
 
+    doc.setFontSize(9);
+    doc.text(10, 293, 'Quedo atento a cualquier comentario o duda que tenga acerca de mis productos o servicios', 'left');
+    doc.text(200, 293, `${pageCounter}`, 'right');
+
+    pageCounter++;
 }
 
 //* CONTRUCCIÓN DE LA TABLA HTML EN LA VISTA CARRITO
@@ -208,7 +221,6 @@ const createQuotationTable = () => {
                     let html = '';
                     groupedProducts.forEach(element => {
 
-                        const productId = element[1][0].id;
                         const productName = element[0];
                         const productPrice = parseInt(element[1][0].precio);
                         const productQuantity = element[1].length;
@@ -216,7 +228,6 @@ const createQuotationTable = () => {
 
                         html += `
                                 <tr>
-                                    <td>${productId}</td>
                                     <td>${productName}</td>
                                     <td style="text-align: right">${MXNCurrency.format(productPrice)}</td>
                                     <td style="text-align: right">${productQuantity}</td>
@@ -226,11 +237,12 @@ const createQuotationTable = () => {
                         totalArray.push(productSubTotal);
                     });
 
+                    tableLength = totalArray.length;
                     const total = totalArray.reduce((acc, current) => { return acc + current }, 0);
 
                     html += `
                                 <tr>
-                                    <td colspan="4" style="font-weight: bolder; border-top: 2px solid #000;">TOTAL</td>
+                                    <td colspan="3" style="font-weight: bolder; border-top: 2px solid #000;">TOTAL</td>
                                     <td style="font-weight: bolder; border-top: 2px solid #000;text-align: right">${MXNCurrency.format(total)}</td>
                                 </tr>`;
 
@@ -298,6 +310,34 @@ const getFolioSequence = async () => {
 // ? ENVIAMOS EL CORREO CON LOS DATOS DEL CLIENTE Y EL PDF DE LA COTIZACIÓN COMO ARCHIVO ADJUNTO
 const sendMail = async (name, phone, mail, message, postal, folio) => {
 
+    const tableString = document.getElementById("tabla_contenedor").innerHTML;
+    const emailHtmlBody = `<div style='display: flex; flex-direction: column; width: 100%; margin-top: 10px'>
+                            <h4>Datos del cliente</h4>
+                            <div style="display: flex; width: 100%; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 30px; margin-bottom: 30px;">
+                                <div style="display: flex; flex-direction: row; gap: 20px; margin-bottom: 8px;">
+                                    <label style="font-weight: bold; width: 120px;">Nombre:</label>
+                                    <span>${name}</span>
+                                </div>
+                                <div style="display: flex; flex-direction: row; gap: 20px; margin-bottom: 8px;">
+                                    <label style="font-weight: bold; width: 120px;">Teléfono:</label>
+                                    <span>${phone}</span>
+                                </div>
+                                <div style="display: flex; flex-direction: row; gap: 20px; margin-bottom: 8px;">
+                                    <label style="font-weight: bold; width: 120px;">Correo:</label>
+                                    <span>${mail}</span>
+                                </div>
+                                <div style="display: flex; flex-direction: row; gap: 20px; margin-bottom: 8px;">
+                                    <label style="font-weight: bold; width: 120px;">Código Postal:</label>
+                                    <span>${postal}</span>
+                                </div>
+                                <div style="display: flex; flex-direction: row; gap: 20px; margin-bottom: 8px;">
+                                    <label style="font-weight: bold; width: 120px;">Mensaje:</label>
+                                    <span>${message}</span>
+                                </div>
+                            </div>
+                            ${tableString}
+                        </div>`;
+
     $.ajax({
         url: 'assets/php/send_mail.php',
         type: 'POST',
@@ -308,6 +348,7 @@ const sendMail = async (name, phone, mail, message, postal, folio) => {
             mail: mail,
             message: message,
             folio: folio,
+            quotation: emailHtmlBody.trim()
         },
         error: function (error) {
             console.error(error);
@@ -320,9 +361,10 @@ const sendMail = async (name, phone, mail, message, postal, folio) => {
 const savePdf = async (blob, folio) => {
 
     const form = new FormData();
+
     form.append('pdf', blob);
     form.append('filename', `COT000${folio}`);
-    
+
     $.ajax('assets/php/create_pdf_file.php', {
         method: 'POST',
         data: form,

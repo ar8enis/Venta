@@ -21,7 +21,8 @@ require_once "config/config.php";
     <script src="https://unpkg.com/jspdf@1.5.3/dist/jspdf.min.js"></script>
     <!-- JSPDF AUTOTABLE -->
     <script src="https://unpkg.com/jspdf-autotable@3.5.3/dist/jspdf.plugin.autotable.js"></script>
-    <!--  -->
+    <!-- DAYJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.10/dayjs.min.js"></script>
 
 </head>
 
@@ -50,20 +51,17 @@ require_once "config/config.php";
         <div class="container px-4 px-lg-5">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="table-responsive">
-                        <table id="tabla_productos" class="table table-hover">
+                    <div class="table-responsive" id="tabla_contenedor">
+                        <table id="tabla_productos" class="table table-hover table-bordered" style="width: 100%">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Producto</th>
-                                    <th style="text-align: right">Precio</th>
-                                    <th style="text-align: right">Cantidad</th>
-                                    <th style="text-align: right">Sub Total</th>
+                                    <th style="text-align: left">Producto</th>
+                                    <th style="text-align: left">Precio</th>
+                                    <th style="text-align: left">Cantidad</th>
+                                    <th style="text-align: left">Sub Total</th>
                                 </tr>
                             </thead>
-                            <tbody id="tblCarrito">
-
-                            </tbody>
+                            <tbody id="tblCarrito"></tbody>
                         </table>
                     </div>
                 </div>
@@ -75,11 +73,11 @@ require_once "config/config.php";
                     </div>
                     <div class="mt-20 contact-form-item">
                         <label aria-required for="customer_phone">Teléfono:</label>
-                        <input placeholder="Número de teléfono a 10 dígitos" id="customer_phone" type="tel" pattern="[0-9]{10}" max="10">
+                        <input placeholder="Número de teléfono a 10 dígitos" id="customer_phone" type="number" pattern="[0-9]{10}" max="10">
                     </div>
                     <div class="mt-20 contact-form-item">
                         <label aria-required for="customer_postal_code">Código Postal:</label>
-                        <input id="customer_postal_code" type="tel" pattern="[0-9]{5}" max="5">
+                        <input id="customer_postal_code" type="number" pattern="[0-9]{5}" max="5">
                     </div>
                     <div class="mt-20 contact-form-item">
                         <label aria-required for="customer_mail">Correo:</label>

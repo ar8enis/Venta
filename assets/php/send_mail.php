@@ -12,6 +12,7 @@
         $customer_mail = $_POST['mail'];
         $customer_message = $_POST['message'];
         $customer_folio = $_POST['folio'];
+        $customer_quotation = $_POST['quotation'];
 
         $filename = "COT000" . $customer_folio . ".pdf";
         $filepath = $_SERVER["DOCUMENT_ROOT"] . "/assets/pdf/" . $filename;
@@ -20,18 +21,20 @@
             //? CONFIGURACIONES DEL SERVIDOR
             $mail -> SMTPDebug = 2;
             $mail -> isSMTP();
-            $mail -> Host = 'mail.refrigeracionyproyectossanantonio.com'; //? HOST SMTP
+            // $mail -> Host = 'mail.refrigeracionyproyectossanantonio.com'; //? HOST SMTP
+            $mail -> Host = 'smtp-mail.outlook.com'; //? HOST SMTP
             $mail -> SMTPAuth = true;
-            $mail -> Username = 'ventasrefrigeracion@refrigeracionyproyectossanantonio.com'; //? CORREO DEL SITIO
-            $mail -> Password = '******'; //? CONTRASEÑA DEL CORREO
-            $mail -> SMTPSecure = 'ssl'; //? SEGURIDAD SMTP
-            $mail -> Port = 465; //? PUERTO SMTP
-            $mail -> setFrom('ventasrefrigeracion@refrigeracionyproyectossanantonio.com', "COT000" . $customer_folio); //? DE
-            $mail -> addAddress('ventasrefrigeracion@refrigeracionyproyectossanantonio.com', $customer_name); //? PARA
+            // $mail -> Username = 'ventasrefrigeracion@refrigeracionyproyectossanantonio.com'; //? CORREO DEL SITIO
+            $mail -> Username = 'antonio.tlaque@hotmail.com'; //? CORREO DEL SITIO
+            $mail -> Password = 'Bb208132#'; //? CONTRASEÑA DEL CORREO
+            $mail -> SMTPSecure = 'TLS'; //? SEGURIDAD SMTP
+            $mail -> Port = 587; //? PUERTO SMTP
+            $mail -> setFrom('antonio.tlaque@hotmail.com', "COT000" . $customer_folio); //? DE
+            $mail -> addAddress('antonio.tlaque@hotmail.com', $customer_name); //? PARA
             $mail -> isHTML(true);
             $mail -> Subject = "Cotización - Refrigeración y Proyectos San Antonio";
-            $mail -> addAttachment($filepath, $filename);
-            $mail -> Body = $customer_message;
+            // $mail -> addAttachment($filepath, $filename);
+            $mail -> Body = $customer_quotation;
             $mail -> CharSet = 'UTF-8';
             $mail -> send();
     

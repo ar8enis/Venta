@@ -67,3 +67,10 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 input[type=number] { -moz-appearance:textfield; }
+
+.email-table-container{
+    position: absolute;
+    top: 0;
+    visibili: ;ty: hidden;
+    opacity: 0;
+}

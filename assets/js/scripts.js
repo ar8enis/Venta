@@ -4,7 +4,7 @@ $(document).ready(function () {
     let items = {
         id: 0
     }
-    
+
     const filesForDownload = [
         { path: "assets/catalogs/lavadora.pdf", name: "Catálogo de Lavadoras - 2023.pdf" },
         { path: "assets/catalogs/licuadoras.pdf", name: "Catálogo de Licuadoras - 2023.pdf" },
@@ -43,26 +43,30 @@ $(document).ready(function () {
         setTimeout(mostrarTodo, 400);
     });
 
-    $('.agregar').click( function(e){
+    $('.agregar').click(function (e) {
         e.preventDefault();
+
         const id = $(this).data('id');
+        const sku = $(this).data('sku');
+
         items = {
-            id: id
+            id: id,
+            sku: sku
         }
         productos.push(items);
         localStorage.setItem('productos', JSON.stringify(productos));
         mostrar();
     })
-    $('#btnCarrito').click(function(e){
-        $('#btnCarrito').attr('href','carrito.php');
+    $('#btnCarrito').click(function (e) {
+        $('#btnCarrito').attr('href', 'carrito.php');
     })
-    $('#btnVaciar').click(function(){
+    $('#btnVaciar').click(function () {
         localStorage.removeItem("productos");
         $('#tblCarrito').html('');
         $('#total_pagar').text('0.00');
     })
     //categoria
-    $('#abrirCategoria').click(function(){
+    $('#abrirCategoria').click(function () {
         $('#categoria_id').val('');
         $('#nombre').val('');
         $('#categoria_accion').val('create');
@@ -86,7 +90,7 @@ $(document).ready(function () {
 
         $('#productos').modal('show');
     })
-    $('.eliminar').click(function(e){
+    $('.eliminar').click(function (e) {
         e.preventDefault();
         if (confirm('Esta seguro de eliminar?')) {
             this.submit();
@@ -100,12 +104,12 @@ $(document).ready(function () {
 
         document.body.appendChild(temporaryLink);
 
-        for(let i = 0; i < filesForDownload.length; i++ ){
+        for (let i = 0; i < filesForDownload.length; i++) {
 
             const download = filesForDownload[i];
 
-            temporaryLink.setAttribute( 'href', download.path );
-            temporaryLink.setAttribute( 'download', download.name );
+            temporaryLink.setAttribute('href', download.path);
+            temporaryLink.setAttribute('download', download.name);
 
             temporaryLink.click();
 
@@ -114,7 +118,7 @@ $(document).ready(function () {
     })
 });
 
-function mostrar(){
+function mostrar() {
     if (localStorage.getItem("productos") != null) {
         let array = JSON.parse(localStorage.getItem('productos'));
         if (array) {
@@ -126,9 +130,10 @@ function mostrar(){
 $('#form_productos').submit(function (e) {
 
     e.preventDefault();
-    
+
     const id = document.querySelector('#producto_id');
     const action = document.querySelector('#producto_action');
+    const sku = document.querySelector('#sku');
     const product = document.querySelector('#nombre');
     const quantity = document.querySelector('#cantidad');
     const description = document.querySelector('#descripcion');
@@ -140,6 +145,7 @@ $('#form_productos').submit(function (e) {
     const form = new FormData();
     form.append('id', id.value);
     form.append('action', action.value);
+    form.append('sku', sku.value);
     form.append('product', product.value);
     form.append('quantity', quantity.value);
     form.append('description', description.value);

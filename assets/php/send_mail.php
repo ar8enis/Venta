@@ -33,7 +33,6 @@
             $mail -> addAddress('antonio.tlaque@hotmail.com', $customer_name); //? PARA
             $mail -> isHTML(true);
             $mail -> Subject = "Cotización - Refrigeración y Proyectos San Antonio";
-            // $mail -> addAttachment($filepath, $filename);
             $mail -> Body = $customer_quotation;
             $mail -> CharSet = 'UTF-8';
             $mail -> send();

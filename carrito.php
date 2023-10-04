@@ -97,6 +97,22 @@ require_once "config/config.php";
                 </div>
             </div>
         </div>
+        
+        <div class="email-table-container" id="email_table_conatiner">
+            <table class="table table-hover table-bordered" style="width: 100%">
+                <thead>
+                    <tr>
+                        <th style="text-align: left; padding: 5px">SKU</th>
+                        <th style="text-align: left; padding: 5px">Producto</th>
+                        <th style="text-align: left; padding: 5px">Precio</th>
+                        <th style="text-align: left; padding: 5px">Cantidad</th>
+                        <th style="text-align: left; padding: 5px">Sub Total</th>
+                    </tr>
+                </thead>
+                <tbody id="table_email_body"></tbody>
+            </table>
+        </div>
+
     </section>
     <!-- Footer-->
     <footer class="py-5 bg-dark">

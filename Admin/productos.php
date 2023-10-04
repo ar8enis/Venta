@@ -12,7 +12,8 @@
             <table class="table table-hover table-bordered" style="width: 100%;">
                 <thead class="thead-dark">
                     <tr>
-                        <th>Imagen</th>
+                        <th style="width: 80px;">Imagen</th>
+                        <th style="width: 80px;">SKU</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
                         <th>Precio Normal</th>
@@ -30,6 +31,7 @@
                     while ($data = mysqli_fetch_assoc($query)) { ?>
                         <tr>
                             <td><img class="img-thumbnail" src="../assets/img/<?php echo $data['imagen']; ?>" width="50"></td>
+                            <td><?php echo $data['sku']; ?></td>
                             <td><?php echo $data['nombre']; ?></td>
                             <td><?php echo $data['descripcion']; ?></td>
                             <td><?php echo $data['precio_normal']; ?></td>
@@ -91,6 +93,12 @@
                             <div class="form-group">
                                 <label for="cantidad">Cantidad</label>
                                 <input id="cantidad" class="form-control" type="text" name="cantidad" placeholder="Cantidad" required>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="sku">SKU:</label>
+                                <input id="sku" class="form-control" type="text" name="sku" placeholder="SKU" required>
                             </div>
                         </div>
                         <div class="col-md-12">

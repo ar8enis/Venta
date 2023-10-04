@@ -220,15 +220,27 @@ const createQuotationTable = () => {
                     // [1] = LOS DATOS DEL PRODUCTO
 
                     let html = '';
+                    let emailHtml = '';
+
                     groupedProducts.forEach(element => {
 
                         const productName = element[0];
                         const productPrice = parseInt(element[1][0].precio);
                         const productQuantity = element[1].length;
-                        const productSubTotal = parseInt(productQuantity * productPrice)
+                        const productSubTotal = parseInt(productQuantity * productPrice);
+                        const sku = element[1][0].sku ?? "";
 
                         html += `
                                 <tr>
+                                    <td style="padding: 5px;">${productName}</td>
+                                    <td style="padding: 5px;text-align: right">${MXNCurrency.format(productPrice)}</td>
+                                    <td style="padding: 5px;text-align: right">${productQuantity}</td>
+                                    <td style="padding: 5px;text-align: right">${MXNCurrency.format(productSubTotal)}</td>
+                                </tr>`;
+
+                        emailHtml += `
+                                <tr>
+                                    <td style="padding: 5px;">${sku}</td>
                                     <td style="padding: 5px;">${productName}</td>
                                     <td style="padding: 5px;text-align: right">${MXNCurrency.format(productPrice)}</td>
                                     <td style="padding: 5px;text-align: right">${productQuantity}</td>
@@ -248,6 +260,8 @@ const createQuotationTable = () => {
                                 </tr>`;
 
                     $('#tblCarrito').html(html);
+                    $('#table_email_body').html(emailHtml);
+
                     // $('#total_pagar').text(res.total);
                     // paypal.Buttons({
                     //     style: {
@@ -311,7 +325,7 @@ const getFolioSequence = async () => {
 // ? ENVIAMOS EL CORREO CON LOS DATOS DEL CLIENTE Y EL PDF DE LA COTIZACIÓN COMO ARCHIVO ADJUNTO
 const sendMail = async (name, phone, mail, message, postal, folio) => {
 
-    const tableString = document.getElementById("tabla_contenedor").innerHTML;
+    const tableString = document.getElementById("email_table_conatiner").innerHTML;
     const emailHtmlBody = `<div style='display: flex; flex-direction: column; width: 100%; margin-top: 10px'>
                             <h4>Datos del cliente</h4>
                             <div style="display: flex; width: 100%; flex-direction: column; justify-content: flex-start; align-items: flex-start; gap: 30px; margin-bottom: 30px;">

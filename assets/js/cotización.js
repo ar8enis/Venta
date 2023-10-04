@@ -259,6 +259,12 @@ const createQuotationTable = () => {
                                     <td style="font-weight: bolder; border-top: 2px solid #000;text-align: right">${MXNCurrency.format(total)}</td>
                                 </tr>`;
 
+                    emailHtml += `
+                                <tr>
+                                    <td colspan="3" style="font-weight: bolder; border-top: 2px solid #000;">TOTAL</td>
+                                    <td style="font-weight: bolder; border-top: 2px solid #000;text-align: right">${MXNCurrency.format(total)}</td>
+                                </tr>`;
+
                     $('#tblCarrito').html(html);
                     $('#table_email_body').html(emailHtml);
 
